@@ -38,9 +38,9 @@ do_install() {
     cp -rTv ${S}/. ${D}${datadir}/flutter/sdk
 }
 
-FILES_${PN}-dev = "${datadir}/flutter/sdk/*"
+FILES:${PN}-dev = "${datadir}/flutter/sdk/*"
 
-INSANE_SKIP_${PN}-dev = "already-stripped"
+INSANE_SKIP:${PN}-dev = "already-stripped"
 
 BBCLASSEXTEND = "native nativesdk"
 

@@ -19,8 +19,8 @@ SRC_URI = "file://0001-clang-toolchain.patch \
 S = "${WORKDIR}/src"
 
 FLUTTER_CHANNEL ??= "beta"
-FLUTTER_CLANG_VERSION ??= "12.0.0"
-TARGET_GCC_VERSION ??= "9.3.0"
+FLUTTER_CLANG_VERSION ??= "13.0.0"
+TARGET_GCC_VERSION ??= "11.2.0"
 
 DEPOT_TOOLS ??= "${STAGING_DIR_NATIVE}/usr/share/depot_tools"
 PYTHON2_PATH ??= "bootstrap-2@3.8.9.chromium.14_bin/python/bin"
@@ -33,12 +33,12 @@ require gn-utils.inc
 SRCREV ??= "${@gn_get_channel_commit(d)}"
 
 COMPATIBLE_MACHINE = "(-)"
-COMPATIBLE_MACHINE_aarch64 = "(.*)"
-COMPATIBLE_MACHINE_armv7 = "(.*)"
-COMPATIBLE_MACHINE_armv7a = "(.*)"
-COMPATIBLE_MACHINE_armv7ve = "(.*)"
-COMPATIBLE_MACHINE_x86 = "(.*)"
-COMPATIBLE_MACHINE_x86-64 = "(.*)"
+COMPATIBLE_MACHINE:aarch64 = "(.*)"
+COMPATIBLE_MACHINE:armv7 = "(.*)"
+COMPATIBLE_MACHINE:armv7a = "(.*)"
+COMPATIBLE_MACHINE:armv7ve = "(.*)"
+COMPATIBLE_MACHINE:x86 = "(.*)"
+COMPATIBLE_MACHINE:x86-64 = "(.*)"
 
 PACKAGECONFIG ?= "disable-desktop-embeddings \
                   embedder-for-target \
@@ -80,24 +80,24 @@ ARGS_GN_FILE = "${WORKDIR}/src/${OUT_DIR_REL}/args.gn"
 OUT_DIR_REL = "${@get_out_dir(d)}"
 
 GN_ARGS = "${PACKAGECONFIG_CONFARGS} --clang --lto --no-goma"
-GN_ARGS_append = " --target-os linux"
-GN_ARGS_append = " --linux-cpu ${@gn_target_arch_name(d)}"
-GN_ARGS_append = " --target-sysroot ${STAGING_DIR_TARGET}"
-GN_ARGS_append = " --target-toolchain ${CLANG_PATH}"
-GN_ARGS_append = " --target-triple ${CLANG_TOOLCHAIN_TRIPLE}"
+GN_ARGS:append = " --target-os linux"
+GN_ARGS:append = " --linux-cpu ${@gn_target_arch_name(d)}"
+GN_ARGS:append = " --target-sysroot ${STAGING_DIR_TARGET}"
+GN_ARGS:append = " --target-toolchain ${CLANG_PATH}"
+GN_ARGS:append = " --target-triple ${CLANG_TOOLCHAIN_TRIPLE}"
 
-GN_ARGS_append_armv7 = " --arm-float-abi ${TARGET_FPU}"
-GN_ARGS_append_armv7a = " --arm-float-abi ${TARGET_FPU}"
-GN_ARGS_append_armv7ve = " --arm-float-abi ${TARGET_FPU}"
+GN_ARGS:append:armv7 = " --arm-float-abi ${TARGET_FPU}"
+GN_ARGS:append:armv7a = " --arm-float-abi ${TARGET_FPU}"
+GN_ARGS:append:armv7ve = " --arm-float-abi ${TARGET_FPU}"
 
 ARGS_GN = ""
-ARGS_GN_append_aarch64 = "arm_tune = \"${@gn_get_tune_features(d)}\""
-ARGS_GN_append_armv7 = "arm_tune = \"${@gn_get_tune_features(d)}\""
-ARGS_GN_append_armv7a = "arm_tune = \"${@gn_get_tune_features(d)}\""
-ARGS_GN_append_armv7ve = "arm_tune = \"${@gn_get_tune_features(d)}\""
+ARGS_GN:append:aarch64 = "arm_tune = \"${@gn_get_tune_features(d)}\""
+ARGS_GN:append:armv7 = "arm_tune = \"${@gn_get_tune_features(d)}\""
+ARGS_GN:append:armv7a = "arm_tune = \"${@gn_get_tune_features(d)}\""
+ARGS_GN:append:armv7ve = "arm_tune = \"${@gn_get_tune_features(d)}\""
 
 
-do_patch_prepend() {
+do_patch:prepend() {
 
     export PATH=${DEPOT_TOOLS}:${DEPOT_TOOLS}/${PYTHON2_PATH}:$PATH
 
@@ -164,7 +164,7 @@ do_patch() {
 do_patch[depends] += "depot-tools-native:do_populate_sysroot"
 do_patch[depends] += "fontconfig:do_populate_sysroot"
 
-do_configure_prepend() {
+do_configure:prepend() {
 
     export PATH=${DEPOT_TOOLS}:${DEPOT_TOOLS}/${PYTHON2_PATH}:$PATH
 }
@@ -179,7 +179,7 @@ do_configure() {
 }
 do_configure[depends] += "depot-tools-native:do_populate_sysroot"
 
-do_compile_prepend() {
+do_compile:prepend() {
 
     export PATH=${DEPOT_TOOLS}:${DEPOT_TOOLS}/${PYTHON2_PATH}:$PATH
 }
@@ -219,11 +219,11 @@ do_install() {
 }
 do_install[depends] += "zip-native:do_populate_sysroot"
 
-FILES_${PN} = "${libdir} \
+FILES:${PN} = "${libdir} \
                ${datadir}/flutter \
               "
 
-FILES_${PN}-dev = "${includedir}"
+FILES:${PN}-dev = "${includedir}"
 
 BBCLASSEXTEND = ""
 

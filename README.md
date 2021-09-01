@@ -49,8 +49,8 @@ local.conf changes
 
     TARGET_GCC_VERSION = "8.3.0"
     FLUTTER_CHANNEL = "master"
-    IMAGE_INSTALL_append = " flutter-drm-eglstream-backend"
-    IMAGE_INSTALL_append = " flutter-gallery"
+    IMAGE_INSTALL:append = " flutter-drm-eglstream-backend"
+    IMAGE_INSTALL:append = " flutter-gallery"
 
 OR
 
@@ -81,8 +81,8 @@ popd
 bitbake-layers add-layer ../sources/meta-clang ../sources/meta-flutter
 echo -e 'TARGET_GCC_VERSION = "10.2.0"' >> conf/local.conf
 echo -e 'FLUTTER_CHANNEL = "dev"' >> conf/local.conf
-echo -e 'IMAGE_INSTALL_append = " flutter-wayland"' >> conf/local.conf
-echo -e 'IMAGE_INSTALL_append = " flutter-gallery"' >> conf/local.conf
+echo -e 'IMAGE_INSTALL:append = " flutter-wayland"' >> conf/local.conf
+echo -e 'IMAGE_INSTALL:append = " flutter-gallery"' >> conf/local.conf
 bitbake fsl-image-multimedia
 ...
 Build Configuration:
@@ -114,8 +114,8 @@ repo sync -j20
 source ./setup-environment $MACHINE
 bitbake-layers add-layer ../sources/meta-clang ../sources/meta-flutter
 echo -e 'FLUTTER_CHANNEL = "dev"' >> conf/local.conf
-echo -e 'IMAGE_INSTALL_append = " flutter-pi"' >> conf/local.conf
-echo -e 'IMAGE_INSTALL_append = " flutter-gallery"' >> conf/local.conf
+echo -e 'IMAGE_INSTALL:append = " flutter-pi"' >> conf/local.conf
+echo -e 'IMAGE_INSTALL:append = " flutter-gallery"' >> conf/local.conf
 bitbake core-image-minimal
 ```
 Note: you may want/need to increase the `GPU_MEM` value.  It's defaulting to 64.
@@ -135,9 +135,9 @@ git clone -b dunfell https://github.com/jwinarske/meta-flutter.git
 git clone -b dunfell https://github.com/kraj/meta-clang.git
 popd
 bitbake-layers add-layer ../layers/meta-flutter ../layers/meta-clang
-echo -e 'MACHINE_FEATURES_remove = "fip"\n' >> conf/local.conf
-echo -e 'DISTRO_FEATURES_remove = "wayland"\n' >> conf/local.conf
-echo -e 'DISTRO_FEATURES_remove = "x11"\n' >> conf/local.conf
+echo -e 'MACHINE_FEATURES:remove = "fip"\n' >> conf/local.conf
+echo -e 'DISTRO_FEATURES:remove = "wayland"\n' >> conf/local.conf
+echo -e 'DISTRO_FEATURES:remove = "x11"\n' >> conf/local.conf
 echo -e 'FLUTTER_CHANNEL = "master"\n' >> conf/local.conf
 echo -e 'CORE_IMAGE_EXTRA_INSTALL += " \' >> conf/local.conf
 echo -e '  flutter-pi \' >> conf/local.conf
@@ -169,7 +169,7 @@ Run Flutter application on target (defaults to AOT)
 
 When building on systems with GCC version > than uninative in Yocto distro add the following to conf/local.conf
 
-    INHERIT_remove = "uninative"
+    INHERIT:remove = "uninative"
 
 
 ### Sony notes
