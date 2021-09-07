@@ -219,11 +219,8 @@ do_install() {
 }
 do_install[depends] += "zip-native:do_populate_sysroot"
 
-FILES:${PN} = "${libdir} \
-               ${datadir}/flutter \
-              "
-
-FILES:${PN}-dev = "${includedir}"
+FILES:${PN} = "${libdir}"
+FILES:${PN}-dev = "${datadir}/flutter ${includedir}"
 
 BBCLASSEXTEND = ""
 
